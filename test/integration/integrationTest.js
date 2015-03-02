@@ -4,13 +4,13 @@ var expect = require('expect.js'),
 describe('integration', function () {
 
   describe('set 1', function () {
-    
+
     describe('format 1', function () {
 
       var domain;
 
       before(function (done) {
-        domain = api({ domainPath: __dirname + '/fixture/set1', commandRejectedEventName: 'rejectedCommand' });
+        domain = api({domainPath: __dirname + '/fixture/set1', commandRejectedEventName: 'rejectedCommand'});
         domain.defineCommand({
           id: 'id',
           name: 'name',
@@ -205,7 +205,7 @@ describe('integration', function () {
               expect(publishedEvents.length).to.eql(1);
               expect(publishedEvents[0].name).to.eql('rejectedCommand');
               expect(publishedEvents[0].payload.reason.name).to.eql('ValidationError');
-              
+
               expect(aggData).to.eql(null);
               expect(meta.aggregateId).to.eql('aggregateId');
               expect(meta.aggregate).to.eql('person');
@@ -289,8 +289,7 @@ describe('integration', function () {
               context: {
                 name: 'hr'
               },
-              payload: {
-              },
+              payload: {},
               revision: 0,
               version: 2,
               meta: {
@@ -320,7 +319,7 @@ describe('integration', function () {
           });
 
         });
-        
+
         describe('that fails on a business rule', function () {
 
           it('it should publish a command rejected event and it should callback with an error and without events', function (done) {
@@ -451,8 +450,7 @@ describe('integration', function () {
               context: {
                 name: 'hr'
               },
-              payload: {
-              },
+              payload: {},
               revision: 1,
               version: 2,
               meta: {
@@ -509,8 +507,7 @@ describe('integration', function () {
               context: {
                 name: 'hr'
               },
-              payload: {
-              },
+              payload: {},
               revision: 1,
               version: 0,
               meta: {
@@ -535,7 +532,41 @@ describe('integration', function () {
         });
 
       });
-      
+
+      describe('pre-condition ordering with priority', function () {
+
+        it.only('should evaluate precondition with priority 1 first', function (done) {
+
+          var cmd = {
+            id: 'cmdId',
+            name: 'enterNewPerson',
+            aggregate: {
+              id: 'aggregateId',
+              name: 'person'
+            },
+            context: {
+              name: 'hr'
+            },
+            payload: {
+              firstname: 'rumpelstilz', // triggers test precondition error
+              lastname: 'some',
+              email: 'test@rumpestilz.org'
+            },
+            revision: 0,
+            version: 0,
+            meta: {
+              userId: 'userId'
+            }
+          };
+
+          domain.handle(cmd, function (err) {
+            expect(err).to.be.ok();
+            expect(err.message).to.be('Precondition with prio 1 failed (all commands)');
+            done();
+          });
+        });
+      });
+
     });
 
     describe('format 2', function () {
@@ -543,7 +574,7 @@ describe('integration', function () {
       var domain;
 
       before(function (done) {
-        domain = api({ domainPath: __dirname + '/fixture/set1', commandRejectedEventName: 'rejectedCommand' });
+        domain = api({domainPath: __dirname + '/fixture/set1', commandRejectedEventName: 'rejectedCommand'});
         domain.defineCommand({
           id: 'id',
           name: 'command',
@@ -679,7 +710,7 @@ describe('integration', function () {
       });
 
     });
-    
+
   });
 
   describe('set 2', function () {
@@ -689,7 +720,7 @@ describe('integration', function () {
       var domain;
 
       before(function (done) {
-        domain = api({ domainPath: __dirname + '/fixture/set2', commandRejectedEventName: 'rejectedCommand' });
+        domain = api({domainPath: __dirname + '/fixture/set2', commandRejectedEventName: 'rejectedCommand'});
         domain.defineCommand({
           id: 'id',
           name: 'command',
@@ -837,6 +868,7 @@ describe('integration', function () {
           });
 
         });
+
 
         describe('that fails on a pre-condition', function () {
 
@@ -1067,7 +1099,7 @@ describe('integration', function () {
       var domain;
 
       before(function (done) {
-        domain = api({ domainPath: __dirname + '/fixture/set2', commandRejectedEventName: 'rejectedCommand' });
+        domain = api({domainPath: __dirname + '/fixture/set2', commandRejectedEventName: 'rejectedCommand'});
         domain.defineCommand({
           id: 'id',
           name: 'name',
@@ -1294,8 +1326,7 @@ describe('integration', function () {
 //              context: {
 //                name: 'hr'
 //              },
-              payload: {
-              },
+              payload: {},
               revision: 1,
               version: 0,
               meta: {
@@ -1332,7 +1363,7 @@ describe('integration', function () {
       var domain;
 
       before(function (done) {
-        domain = api({ domainPath: __dirname + '/fixture/set2', commandRejectedEventName: 'rejectedCommand' });
+        domain = api({domainPath: __dirname + '/fixture/set2', commandRejectedEventName: 'rejectedCommand'});
         domain.defineCommand({
           id: 'id',
           name: 'command',
@@ -1675,7 +1706,7 @@ describe('integration', function () {
       var domain;
 
       before(function (done) {
-        domain = api({ domainPath: __dirname + '/fixture/set2', commandRejectedEventName: 'rejectedCommand' });
+        domain = api({domainPath: __dirname + '/fixture/set2', commandRejectedEventName: 'rejectedCommand'});
         domain.defineCommand({
           id: 'id',
           name: 'name',
@@ -1902,8 +1933,7 @@ describe('integration', function () {
 //              context: {
 //                name: 'hr'
 //              },
-              payload: {
-              },
+              payload: {},
               revision: 1,
               version: 0,
               meta: {
